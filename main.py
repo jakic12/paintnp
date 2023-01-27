@@ -1,12 +1,23 @@
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 import sys
 import highlight
-from io import StringIO
-from contextlib import redirect_stdout
+import numpy as np
+from PIL import Image
 
 def p_r(x):
     print(x)
     return x
+
+class ConsoleStdoutWrapper():
+    def __init__(self, parent):
+        self.parent = parent
+
+    def write(self, txt):
+        self.parent.appendPlainText(str(txt))
+    
+    def clear(self):
+        self.parent.setPlainText("")
+
 
 class Ui(QtWidgets.QMainWindow):
     def __init__(self):
@@ -34,30 +45,37 @@ class Ui(QtWidgets.QMainWindow):
         self.executeShortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Shift+Return"), self.codeEditor)
         self.executeShortcut.activated.connect(self.executeCode)
 
-
-
-        self.image = None
+        self.npimage = None
 
         #update on resize
-        self.mainImageLabel.resizeEvent = self.resizeImageToFit
+        self.mainImageLabel.resizeEvent = self.updateImage
         self.mainImageLabel.setAcceptDrops(True)
         self.mainImageLabel.dropEvent = self.imageDropped
         self.mainImageLabel.dragEnterEvent = self.dragEnterEvent
 
+        #self.myThread = MyQThread()
+        self.codeStdout = ConsoleStdoutWrapper(self.codeOutput)
+
         self.show()
+
+    def numpyToQImage(self, arr):
+        height, width, channel = arr.shape
+        return QtGui.QImage(arr, width, height, channel * width, QtGui.QImage.Format_RGB888)
 
     def executeCode(self):
         code = self.codeEditor.toPlainText()
+        old_stdout = sys.stdout
+        self.codeStdout.clear()
+        sys.stdout = self.codeStdout
+        try:
+            exec(code, globals(), locals())
+        except Exception as e:
+            print(e)
+        sys.stdout = old_stdout
 
-        f = StringIO()
-        with redirect_stdout(f):
-            try:
-                exec(code, globals(), locals())
-            except Exception as e:
-                print(e)
-        s = f.getvalue()
-        self.codeOutput.setPlainText(s)
-        
+        # convert numpy array back to image
+        if self.npimage is not None:
+            self.updateImage()
 
     def dragEnterEvent(self, event):
         file_name = event.mimeData().text()
@@ -70,8 +88,7 @@ class Ui(QtWidgets.QMainWindow):
         if event.mimeData().hasImage:
             #event.setDropAction(QtWidgets.CopyAction)
             file_path = event.mimeData().urls()[0].toLocalFile()
-            self.imageFileName = file_path
-            self.loadImageFromFile()
+            self.loadImageFromFile(file_path)
 
             event.accept()
         else:
@@ -79,33 +96,23 @@ class Ui(QtWidgets.QMainWindow):
 
     def openImagePressed(self):
         print("open")
-        self.imageFileName = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File', '/home')[0]
+        file_path = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File', '/home')[0]
 
-        self.loadImageFromFile()
+        self.loadImageFromFile(file_path)
     
-    def loadImageFromFile(self):
-        self.image = QtGui.QImage(self.imageFileName)
-        self.resizeImageToFit()
+    def loadImageFromFile(self,path):
+        self.imageFileName = path
+        # load file into numpy image (remove alpha channel)
+        self.npimage = np.array(Image.open(path).convert('RGB')).astype(np.uint8)
+        self.updateImage()
     
-    def resizeImageToFit(self, event_=None):
+    def updateImage(self, event_=None):
         print('resizing mainPaint to ', self.mainImageLabel.width())
-        if self.image:
-            self.scaledImage = self.image.scaled(int(self.mainImageLabel.width()), int(self.mainImageLabel.height()), QtCore.Qt.KeepAspectRatio)
-            self.updateImage()
-    
-    def resizeCodeEditorToFit(self):
-        self.codeEditor.resize(int(self.width() * (1 - self.imageWidthPortion)), self.codeEditor.height())
-
-    def updateImage(self):
-        self.mainImageLabel.setPixmap(QtGui.QPixmap.fromImage(self.scaledImage))
-
-        #exec('self.mainImageLabel=None', globals(), locals())
-        
-        # make label resizeable
-        #self.mainImageLabel.setScaledContents(True)
-
-        # set size policy to ignore size
-        #self.mainImageLabel.setSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Ignored)
+        if self.npimage is not None:
+            im_np = np.transpose(self.npimage, (0,1,2)).copy()
+            img = self.numpyToQImage(self.npimage)
+            self.scaledImage = img.scaled(int(self.mainImageLabel.width()), int(self.mainImageLabel.height()), QtCore.Qt.KeepAspectRatio)
+            self.mainImageLabel.setPixmap(QtGui.QPixmap.fromImage(self.scaledImage))
 
 
 
