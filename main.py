@@ -4,6 +4,8 @@ import highlight
 import numpy as np
 from PIL import Image
 
+from examples import examples
+
 def p_r(x):
     print(x)
     return x
@@ -33,6 +35,8 @@ class Ui(QtWidgets.QMainWindow):
         self.highlighter = highlight.PythonHighlighter(self.codeEditor.document())
         self.highlighter.setDocument(self.codeEditor.document())
 
+        self.codeEditor.setPlainText(examples["invert random box"])
+
         self.mainImageLabel = self.findChild(QtWidgets.QLabel, 'mainImage')
         self.mainPaint = self.findChild(QtWidgets.QVBoxLayout, 'mainPaint')
 
@@ -48,7 +52,7 @@ class Ui(QtWidgets.QMainWindow):
         self.npimage = None
 
         #update on resize
-        self.mainImageLabel.resizeEvent = self.updateImage
+        self.mainImageLabel.resizeEvent = self.updateDisplayImage
         self.mainImageLabel.setAcceptDrops(True)
         self.mainImageLabel.dropEvent = self.imageDropped
         self.mainImageLabel.dragEnterEvent = self.dragEnterEvent
@@ -67,15 +71,44 @@ class Ui(QtWidgets.QMainWindow):
         old_stdout = sys.stdout
         self.codeStdout.clear()
         sys.stdout = self.codeStdout
+        new_locals = locals()
         try:
-            exec(code, globals(), locals())
+            exec(code, globals(), new_locals)
         except Exception as e:
             print(e)
         sys.stdout = old_stdout
 
+        if 'workerObj' in new_locals:
+            print('workerObj found')
+            workerObj = new_locals['workerObj']
+            def run_func():
+                try:
+                    workerObj.run()
+                except Exception as e:
+                    print(e)
+                    workerObj.finished.emit()
+            
+            self.workerThread = QtCore.QThread()
+            self.workerThread.started.connect(lambda: workerObj.run())
+            workerObj.moveToThread(self.workerThread)
+            print(workerObj.run)
+            #self.workerThread.started.connect(lambda: print("thread started"))
+            self.workerThread.finished.connect(self.workerThread.deleteLater)
+            workerObj.finished.connect(self.workerThread.quit)
+            workerObj.finished.connect(workerObj.deleteLater)
+
+
+
+
+            if 'updateImage' in dir(workerObj):
+                workerObj.updateImage.connect(self.updateImage)
+                print('updateImage connected')
+            self.workerThread.start()
+
+
         # convert numpy array back to image
         if self.npimage is not None:
-            self.updateImage()
+            self.updateDisplayImage()
 
     def dragEnterEvent(self, event):
         file_name = event.mimeData().text()
@@ -102,12 +135,14 @@ class Ui(QtWidgets.QMainWindow):
     
     def loadImageFromFile(self,path):
         self.imageFileName = path
-        # load file into numpy image (remove alpha channel)
-        self.npimage = np.array(Image.open(path).convert('RGB')).astype(np.uint8)
-        self.updateImage()
+        self.updateImage(np.array(Image.open(path).convert('RGB')).astype(np.uint8))
+
+    def updateImage(self, image):
+        self.npimage = image
+        self.updateDisplayImage()
     
-    def updateImage(self, event_=None):
-        print('resizing mainPaint to ', self.mainImageLabel.width())
+    def updateDisplayImage(self, event_=None):
+        #print('resizing mainPaint to ', self.mainImageLabel.width())
         if self.npimage is not None:
             im_np = np.transpose(self.npimage, (0,1,2)).copy()
             img = self.numpyToQImage(self.npimage)
