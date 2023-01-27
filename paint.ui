@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>784</width>
-    <height>564</height>
+    <width>893</width>
+    <height>582</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,149 +20,133 @@
    <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_3">
-    <item>
-     <widget class="QSplitter" name="splitter">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="opaqueResize">
-       <bool>false</bool>
-      </property>
-      <property name="childrenCollapsible">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="verticalLayoutWidget">
-       <layout class="QVBoxLayout" name="mainPaint">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <item>
+   <widget class="QSplitter" name="splitter">
+    <property name="geometry">
+     <rect>
+      <x>12</x>
+      <y>12</y>
+      <width>440</width>
+      <height>513</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+    <property name="opaqueResize">
+     <bool>false</bool>
+    </property>
+    <property name="childrenCollapsible">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="verticalLayoutWidget">
+     <layout class="QVBoxLayout" name="mainPaint">
+      <item>
+       <layout class="QHBoxLayout" name="toolBar">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
         <item>
-         <layout class="QHBoxLayout" name="toolBar">
-          <property name="spacing">
-           <number>0</number>
+         <widget class="QLabel" name="brush">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
-          <property name="sizeConstraint">
-           <enum>QLayout::SetDefaultConstraint</enum>
+          <property name="text">
+           <string>Brush</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="select">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Select</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="colorPickerSliders">
           <item>
-           <widget class="QLabel" name="brush">
+           <widget class="QSlider" name="saturationSlider">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="text">
-             <string>Brush</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="select">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Select</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="colorPickerSliders">
-            <item>
-             <widget class="QSlider" name="saturationSlider">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximum">
-               <number>100</number>
-              </property>
-              <property name="value">
-               <number>100</number>
-              </property>
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSlider" name="valueSlider">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximum">
-               <number>100</number>
-              </property>
-              <property name="value">
-               <number>100</number>
-              </property>
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="QDial" name="hueDial">
             <property name="maximum">
-             <number>360</number>
+             <number>100</number>
+            </property>
+            <property name="value">
+             <number>100</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="colorPreview">
+           <widget class="QSlider" name="valueSlider">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="text">
-             <string>ColorPreview</string>
+            <property name="maximum">
+             <number>100</number>
             </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
+            <property name="value">
+             <number>100</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
          </layout>
         </item>
         <item>
-         <widget class="QLabel" name="mainImage">
+         <widget class="QDial" name="hueDial">
+          <property name="maximum">
+           <number>360</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="colorPreview">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
           <property name="text">
-           <string/>
+           <string>ColorPreview</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -170,65 +154,162 @@
          </widget>
         </item>
        </layout>
-      </widget>
-      <widget class="QWidget" name="verticalLayoutWidget_2">
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <property name="spacing">
-         <number>0</number>
+      </item>
+      <item>
+       <widget class="QLabel" name="mainImage">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="bottomMargin">
-         <number>0</number>
+        <property name="autoFillBackground">
+         <bool>false</bool>
         </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="verticalLayoutWidget_2">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QPlainTextEdit" name="codeEdit">
-          <property name="styleSheet">
-           <string notr="true">font-family:'Consolas'; 
-color: #ccc; 
-background-color: black;</string>
-          </property>
-          <property name="overwriteMode">
-           <bool>false</bool>
-          </property>
-          <property name="tabStopWidth">
-           <number>20</number>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>TextLabel</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPlainTextEdit" name="codeOutput">
+         <widget class="QLabel" name="unsavedChanges">
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="resources.qrc">:/newPrefix/icons/warning-98676_1280.png</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="unsavedLabel">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="readOnly">
-           <bool>true</bool>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
           </property>
-          <property name="tabStopWidth">
-           <number>30</number>
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="executeBtn">
+          <property name="baseSize">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
           <property name="text">
-           <string>Execute</string>
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="resources.qrc">:/newPrefix/icons/save-icon-original.png</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
        </layout>
-      </widget>
-     </widget>
-    </item>
-   </layout>
+      </item>
+      <item>
+       <widget class="QSplitter" name="splitter_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <widget class="QPlainTextEdit" name="codeEdit">
+         <property name="styleSheet">
+          <string notr="true">font-family:'Consolas'; 
+color: #ccc; 
+background-color: black;</string>
+         </property>
+         <property name="overwriteMode">
+          <bool>false</bool>
+         </property>
+         <property name="tabStopWidth">
+          <number>20</number>
+         </property>
+        </widget>
+        <widget class="QPlainTextEdit" name="codeOutput">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="tabStopWidth">
+          <number>30</number>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="executeBtn">
+        <property name="text">
+         <string>Execute</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   </item>
+  </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>784</width>
+     <width>893</width>
      <height>24</height>
     </rect>
    </property>
@@ -239,7 +320,13 @@ background-color: black;</string>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
    </widget>
+   <widget class="QMenu" name="menuexm">
+    <property name="title">
+     <string>Examples</string>
+    </property>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuexm"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen">
@@ -253,6 +340,8 @@ background-color: black;</string>
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

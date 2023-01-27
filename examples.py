@@ -8,9 +8,9 @@ examples = {
 		self.img = img
 
 	def run(self):
-		for i in range(10):
+		for i in range(100):
 			import time
-			time.sleep(1)
+			time.sleep(0.01)
 			print(i)
 			a = np.random.randint(0,self.img.shape[0])
 			b = np.random.randint(a,self.img.shape[0])
