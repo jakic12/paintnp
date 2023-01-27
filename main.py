@@ -3,6 +3,7 @@ import sys
 import highlight
 import numpy as np
 from PIL import Image
+import threading
 
 from examples import examples
 
@@ -81,21 +82,16 @@ class Ui(QtWidgets.QMainWindow):
         if 'workerObj' in new_locals:
             print('workerObj found')
             workerObj = new_locals['workerObj']
-            def run_func():
-                try:
-                    workerObj.run()
-                except Exception as e:
-                    print(e)
-                    workerObj.finished.emit()
+            self.workerObj = workerObj
             
             self.workerThread = QtCore.QThread()
-            self.workerThread.started.connect(lambda: workerObj.run())
-            workerObj.moveToThread(self.workerThread)
-            print(workerObj.run)
-            #self.workerThread.started.connect(lambda: print("thread started"))
+            self.workerObj.moveToThread(self.workerThread)
+            self.workerThread.started.connect(self.workerObj.run)
             self.workerThread.finished.connect(self.workerThread.deleteLater)
-            workerObj.finished.connect(self.workerThread.quit)
-            workerObj.finished.connect(workerObj.deleteLater)
+            self.workerObj.finished.connect(self.workerThread.quit)
+            self.workerObj.finished.connect(self.workerObj.deleteLater)
+            print(self.workerObj.run)
+            #self.workerThread.started.connect(lambda: print("thread started"))
 
 
 
@@ -104,6 +100,8 @@ class Ui(QtWidgets.QMainWindow):
                 workerObj.updateImage.connect(self.updateImage)
                 print('updateImage connected')
             self.workerThread.start()
+        else:
+            print('workerObj not found')
 
 
         # convert numpy array back to image
